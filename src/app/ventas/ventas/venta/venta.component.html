@@ -1,41 +1,126 @@
-<div class="search-div">
-    <button mat-raised-button  (click)="onCreate()">
+<!-- <mat-toolbar>
+  <span>{{ventaService.form.controls['$key'].value?"Modify Employee":"New Employee"}}</span>
+  <span class="fill-remaining-space"></span>
+  <button class="btn-dialog-close" mat-stroked-button  tabIndex="-1"><mat-icon>clear</mat-icon></button>
+</mat-toolbar> -->
+<!-- <form [formGroup]="service.form" class="normal-form" (submit)="onSubmit()"> -->
+<form #form="ngForm" autocomplete="off" *ngIf="service.formData" (submit)="onSubmit(form)">
+  <input type="hidden" name="ventaId" #ventaId="ngModel" [(ngModel)]="service.formData.ventaId">
+  <mat-grid-list cols="2" rowHeight="300px">
+    <mat-grid-tile>
+      <div class="controles-container">
+
+        <mat-form-field>
+          <mat-label>Order No.</mat-label>
+          <input name="numComprobante" matInput type="text" #numComprobante="ngModel"
+            [(ngModel)]="service.formData.numComprobante" readonly="true">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Tipo Documento</mat-label>
+          <mat-select name="tipoComprobante" #tipoComprobante="ngModel"
+            [(ngModel)]="service.formData.tipoComprobante">
+            <mat-option>None</mat-option>
+            <mat-option value="Boleta">Boleta</mat-option>
+            <mat-option value="Factura">Factura</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+
+        <mat-form-field>          
+          <mat-select name="tipoComprobante" #tipoComprobante="ngModel" [(ngModel)]="service.formData.personaId">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let persona of PersonaList" value="{{persona.personaId}}">
+              {{persona.nombre}}-{{persona.tipoPersona}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+
+
+        
+
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+
+      <div class="controles-container">
+
+        <mat-form-field>
+          <mat-label>Mètodo de Pago</mat-label>
+          <mat-select name="serieComprobante" #serieComprobante="ngModel"
+            [(ngModel)]="service.formData.serieComprobante">
+            <mat-option>None</mat-option>
+            <mat-option value="Cash">Cash</mat-option>
+            <mat-option value="Card">Card</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>IMPUESTO</mat-label>
+          <input name="impuesto" matInput type="text" #impuesto="ngModel" [(ngModel)]="service.formData.impuesto"
+            readonly="true">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>TOTAL A PAGAR</mat-label>
+          <input name="total" matInput type="text" #total="ngModel" [(ngModel)]="service.formData.total"
+            readonly="true">
+        </mat-form-field>
+
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</form>
+
+
+
+
+<!-- order items table-->
+
+<div>
+  <!-- <div class="search-div">
+    <button mat-raised-button (click)="onCreate()">
       <mat-icon>add</mat-icon>Create
     </button>
     <mat-form-field class="search-form-field" floatLabel="never">
       <input matInput [(ngModel)]="searchKey" placeholder="Search" autocomplete="off" (keyup)="applyFilter()">
-      <button mat-button matSuffix mat-icon-button aria-label="Clear"*ngIf="searchKey"  (click)="onSearchClear()">
+      <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="searchKey" (click)="onSearchClear()">
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
-  </div>
+  </div> -->
   <div class="mat-elevation-z8">
-    <mat-table [dataSource]="listData"  matSort>
-      <ng-container matColumnDef="fullName">
-        <mat-header-cell *matHeaderCellDef  mat-sort-header>Full Name</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.fullName}}</mat-cell>
+    <mat-table [dataSource]="listData" matSort>
+      <ng-container matColumnDef="ARTICULO">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>ARTICULO</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.articulo}}</mat-cell>
       </ng-container>
-      <ng-container matColumnDef="email">
-        <mat-header-cell *matHeaderCellDef  mat-sort-header>Email</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.email}}</mat-cell>
+      <ng-container matColumnDef="PRECIO">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>PRECIO</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.precio}}</mat-cell>
       </ng-container>
-      <ng-container matColumnDef="mobile">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Mobile</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.mobile}}</mat-cell>
+      <ng-container matColumnDef="CANTIDAD">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>CANTIDAD</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.cantidad}}</mat-cell>
       </ng-container>
-      <ng-container matColumnDef="city">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>City</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.city}}</mat-cell>
+      <ng-container matColumnDef="DESCUENTO">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>DESCUENTO</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.descuento}}</mat-cell>
       </ng-container>
-      <ng-container matColumnDef="departmentName">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Department</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.departmentName}}</mat-cell>
+      <ng-container matColumnDef="TOTAL">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>TOTAL</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.total}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <button mat-icon-button (click)="onEdit(row)"><mat-icon>launch</mat-icon></button>
-          <button mat-icon-button color="warn" (click)="onDelete(row.$key)"><mat-icon>delete_outline</mat-icon></button>
+          <button mat-icon-button (click)="AddOrEditOrdenItem(row,service.formData.ventaId)">
+            <mat-icon>launch</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="AddOrEditOrdenItem(row.$key)">
+            <mat-icon>delete_outline</mat-icon>
+          </button>
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="loading">
@@ -51,7 +136,10 @@
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
       <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':listData!=null}"></mat-footer-row>
-      <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(listData!=null && listData.data.length==0)}"></mat-footer-row>
+      <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(listData!=null && listData.data.length==0)}">
+      </mat-footer-row>
     </mat-table>
     <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
   </div>
+
+</div>

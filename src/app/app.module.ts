@@ -14,17 +14,27 @@ import { OrdersComponent } from './orders/orders.component';
 import { OrderComponent } from './orders/order/order.component';
 import { OrderItemsComponent } from './orders/order-items/order-items.component';
 import { OrderService } from './shared/order.service';
+import { VentasComponent } from './ventas/ventas/ventas.component';
+import { VentaComponent } from './ventas/ventas/venta/venta.component';
+import { ArticuloventaComponent } from './ventas/ventas/articuloventa/articuloventa.component';
 
+
+
+// Controles angular material
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
-
+import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatInputModule} from '@angular/material/input';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatSelectModule} from '@angular/material/select';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
-import { VentasComponent } from './ventas/ventas/ventas.component';
-import { VentaComponent } from './ventas/ventas/venta/venta.component';
-import { ArticuloventaComponent } from './ventas/ventas/articuloventa/articuloventa.component';
+
+
 
 @NgModule({
   declarations: [
@@ -50,6 +60,12 @@ import { ArticuloventaComponent } from './ventas/ventas/articuloventa/articulove
     MatPaginatorModule,
     MatFormFieldModule,
     MatInputModule,
+    MatToolbarModule,
+    MatGridListModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatCheckboxModule,
     ToastrModule.forRoot()
   ],
 
