@@ -8,9 +8,6 @@ import { CustomerService } from 'src/app/shared/customer.service';
 import { Customer } from 'src/app/shared/customer.model';
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
-// import { OrderItem } from 'src/app/shared/order-item.model';
-// import { NULL_EXPR } from '@angular/compiler/src/output/output_ast';
-
 
 @Component({
   selector: 'app-order',
