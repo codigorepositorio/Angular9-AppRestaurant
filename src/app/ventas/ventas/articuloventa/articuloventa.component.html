@@ -1,6 +1,6 @@
 <h3 class="dispaly-4">Order Food Item</h3>
 <hr>
-<form #form="ngForm" autocomplete="off" (submit)="onsubmit(form)">
+<form #form="ngForm" autocomplete="off" (ngSubmit)="onsubmit(form)">
     <input type="hidden" name="detalleVentaId" #detalleVentaId="ngModel" [(ngModel)]="formData.detalleVentaId">
     <input type="hidden" name="ventaId" #ventaId="ngModel" [(ngModel)]="formData.ventaId">
     <input type="hidden" name="articulo" #articulo="ngModel" [(ngModel)]="formData.articulo">
@@ -11,7 +11,7 @@
         <select name="articuloId" #articuloId="ngModel" [(ngModel)]="formData.articuloId" class="form-control"
             (change)="updatePrice($event.target)" [class.is-invalid]="!isValid && formData.ventaId==0">
             <option value="0">-Select-</option>
-            <option *ngFor="let articulo of articuloList" value="{{articulo.articuloId}}">{{articulo.nombre}}</option>
+            <option *ngFor="let articulo of articuloList" [value]=articulo.articuloId>{{articulo.nombre}}</option>
         </select>
 
     </div>
@@ -22,7 +22,7 @@
                 <div class="input-group-prepend">
                     <div class="input-group-text">$</div>
                 </div>
-                <input name="price" #price="ngModel" [(ngModel)]="formData.precio" class="form-control" readonly>
+                <input name="precio" #price="ngModel" [(ngModel)]="formData.precio" class="form-control" readonly>
             </div>
         </div>
         <div class="form-group col-md-6">

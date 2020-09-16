@@ -22,22 +22,34 @@ export class ArticuloventaComponent implements OnInit {
     public dialogRef: MatDialogRef<ArticuloventaComponent>,
     private articuloService: ArticuloService,
     private ventaService: VentaService
-
   ) { }
 
   ngOnInit(): void {
-
-
-
     this.articuloService.getArticuloList().subscribe((res: any) => this.articuloList = res as Articulo[]);
 
-    this.formData = Object.assign({}, this.ventaService.ventaArticulos[this.data.ventaArticuloIndex]);
 
+    var Entityarticulo =
+      this.ventaService.detalleVentas.find(
+        (key) => {
+          return key.detalleVentaId == this.data.ventaArticuloIndex
+        }
+      );
+
+    if (Entityarticulo != null) {
+      this.formData = Object.assign({}, Entityarticulo);
+    }
+    else {
+      this.formData = {
+        articuloId: 0,
+        articulo: "",
+        cantidad: 0,
+        precio: 0,
+        total: 0
+      }
+    }
     console.log("idnx", this.data.ventaArticuloIndex);
-
+    console.log("form", this.ventaService.detalleVentas);
   }
-
-
   updatePrice(ctrl) {
     if (ctrl.selectedIndex == 0) {
       this.formData.precio = 0;
@@ -55,23 +67,44 @@ export class ArticuloventaComponent implements OnInit {
   }
 
   onsubmit(form: NgForm) {
-
     if (this.validateForm(form.value)) {
-      if (this.data.ventaArticuloIndex == null)
-        this.ventaService.ventaArticulos.push(form.value);
-      else
-        this.ventaService.ventaArticulos[this.data.ventaArticuloIndex] = form.value
-      this.dialogRef.close();
+      if (this.data.ventaArticuloIndex == null) {
+        this.ventaService.detalleVentas.push(form.value);
+        this.dialogRef.close();
+      }
+      else {
+        var articulo =
+          this.ventaService.detalleVentas.find(
+            (key) => {
+              return key.detalleVentaId == this.data.ventaArticuloIndex
+            }
+          );
+        if (articulo != null) {
+          articulo.articuloId = this.formData.articuloId;
+          articulo.articulo = this.formData.articulo;
+          articulo.precio = this.formData.precio;
+          articulo.cantidad = this.formData.cantidad;
+          articulo.descuento = this.formData.descuento;
+          articulo.total = this.formData.total;
+          console.log(form);
+          this.dialogRef.close();
+        }
+      }
+
     }
   }
 
   validateForm(formData: VentaArticulo) {
     this.isValid = true;
-    if (formData.articuloId == 0)
+    console.log("ID articulo: ", formData.articuloId);
+    if (formData.articuloId == 0) {
       this.isValid = false;
+    }
     else if (formData.cantidad == 0)
       this.isValid = false;
     return this.isValid
   }
+
+  
 
 }

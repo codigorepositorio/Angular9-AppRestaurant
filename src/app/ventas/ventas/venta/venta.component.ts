@@ -2,7 +2,6 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-//import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { PersonaService } from '../../services/persona.service';
 import { Persona } from '../../Model/persona.model';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -10,8 +9,6 @@ import { VentaService } from '../../services/venta.service';
 import { NgForm } from '@angular/forms';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { ArticuloventaComponent } from '../articuloventa/articuloventa.component';
-
-
 
 @Component({
   selector: 'app-venta',
@@ -40,25 +37,19 @@ export class VentaComponent implements OnInit {
 
     // let orderID = this.currentRouter.snapshot.paramMap.get('id');
     let ventaID = '15';
-
-
     // if (orderID == null)
     //this.resetForm();
     // else {
     this.service.getVentaByID(parseInt(ventaID)).subscribe((res: any) => {
       this.service.formData = res.ventas;
       console.log("venta=>>>>>>", this.service.formData = res.ventas);
-      this.service.ventaArticulos = res.detalleVentas;
-      console.log("detalles=>>>>>>", this.service.ventaArticulos = res.ventas.detalleVentas);
+      this.service.detalleVentas = res.detalleVentas;
+      console.log("detalles=>>>>>>", this.service.detalleVentas = res.ventas.detalleVentas);
 
-      // this.listData = this.service.ventaArticulos = res.ventas.detalleVentas
       this.listData = new MatTableDataSource(res.ventas.detalleVentas);
       this.listData.sort = this.sort;
       this.listData.paginator = this.paginator;
     });
-
-
-
     // }//Fin de Init
 
     this.PersonaService.getPersonaList().subscribe(
@@ -66,12 +57,11 @@ export class VentaComponent implements OnInit {
         this.PersonaList = res as Persona[]
         console.log("PERSONA", this.PersonaList = res as Persona[])
       });
-
-
-
   }
+
   AddOrEditOrdenItem(ordenItemIndex, OrderID) {
-    let ventaArticuloIndex= ordenItemIndex.detalleVentaId
+    
+    let ventaArticuloIndex = ordenItemIndex.detalleVentaId
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.disableClose = true;
@@ -79,41 +69,41 @@ export class VentaComponent implements OnInit {
     dialogConfig.data = { ventaArticuloIndex, OrderID };
     console.log(dialogConfig.data);
     this.dialog.open(ArticuloventaComponent, dialogConfig).afterClosed()
-      .subscribe(res => {
+      .subscribe(res => {        
         this.updateGrandTotal();
+        this.listData = new MatTableDataSource(this.service.detalleVentas);
+        this.listData.sort = this.sort;
+        this.listData.paginator = this.paginator;
       });
   }
 
   updateGrandTotal() {
-    this.service.formData.total = this.service.ventaArticulos.reduce((prev, curr) => {
+    console.log(this.service.formData.total);
+    this.service.formData.total = this.service.detalleVentas.reduce((prev, curr) => {
       return prev + curr.total;
     }, 0)
     this.service.formData.total = parseFloat(this.service.formData.total.toFixed(2));
   }
 
-
-
-
-
   validateForm() {
     this.isValid = true;
     if (this.service.formData.personaId == 0)
       this.isValid = false;
-    // else if (this.service.orderItems.length == 0)
-    this.isValid = false;
+    else if (this.service.detalleVentas.length == 0)
+      this.isValid = false;
     return this.isValid;
   }
 
   onSubmit(form: NgForm) {
-    if (this.validateForm()) {
+    // if (this.validateForm()) {
       this.service.saveOrUpdateOrder().subscribe(res => {
+        console.log("VENTAS========>",form.value);
         this.resetForm();
         // this.toastr.success('submitted Successfully', 'Restaurant App.');
         //this.router.navigate(['/ventas']);
       });
-    }
+    // }
   }
-
 
   resetForm(form?: NgForm) {
     if (form = null)

@@ -1,3 +1,5 @@
+import { VentaArticulo } from './venta-articulo.model';
+
 export class Venta {
     ventaId: number;
     personaId: number;
@@ -8,4 +10,5 @@ export class Venta {
     impuesto: number;
     total: number;
     estado?: boolean;
+    detalleVentas?:VentaArticulo
 }

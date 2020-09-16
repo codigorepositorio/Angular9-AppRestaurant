@@ -10,16 +10,17 @@ import { VentaArticulo } from '../Model/venta-articulo.model';
 
 export class VentaService {
   formData: Venta;  
-  ventaArticulos:VentaArticulo[];
+  detalleVentas:VentaArticulo[];
 
   constructor(private http: HttpClient) { }
 
   saveOrUpdateOrder() {
     var body = {
       ...this.formData,
-      ventaArticulos: this.ventaArticulos
+      detalleVentas: this.detalleVentas
     }
-    return this.http.post(environment.apiURL + '/Order', body);
+    console.log("BODY=============>",body);
+    return this.http.post(environment.apiURLS + '/ventas', body);
   }
 
   getVentaByID(id: number): any {
